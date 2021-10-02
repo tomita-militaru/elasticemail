@@ -1,0 +1,41 @@
+{
+  "name": "workwithtom/elasticemail",
+  "description": "Elastic Email integration for Craft CMS",
+  "version": "1.0.0",
+  "type": "craft-plugin",
+  "keywords": [
+    "cms",
+    "craftcms",
+    "elastic",
+    "mailer",
+    "yii2"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Work With Tom",
+      "homepage": "https://www.workwithtom.ro/"
+    }
+  ],
+  "support": {
+    "email": "tom@workwithtom.tom",
+    "issues": "https://github.com/workwithtom/elasticemail/issues?state=open",
+    "source": "https://github.com/workwithtom/elasticemail",
+    "docs": "https://github.com/workwithtom/elasticemail/blob/master/README.md",
+    "rss": "https://github.com/workwithtom/elasticemail/commits/master.atom"
+  },
+  "require": {
+    "craftcms/cms": "^3.1.5",
+    "elastic-email/web-api-client": "^1.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "workwithtom\\elasticemail\\": "src/"
+    }
+  },
+  "extra": {
+    "name": "Elastic Email",
+    "handle": "elasticemail",
+    "documentationUrl": "https://github.com/workwithtom/elasticemail/blob/master/README.md"
+  }
+}
