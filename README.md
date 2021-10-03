@@ -32,6 +32,6 @@ composer require workwithtom/elasticemail
 ## Setup
 
 Once Elastic Email is installed, go to Settings → Email, and change the “Transport Type” setting to “Elastic Email”. 
-Enter your Elastic Email domain name, endpoint and API Key (which you can get from [www.elasticemail.com](https://www.elasticemail.com/) page).
+Enter your Elastic Email endpoint and API Key (which you can get from [www.elasticemail.com](https://www.elasticemail.com/) page).
 
-> **Tip:** The Domain, API Key, and Endpoint settings can be set to environment variables. See [Environmental Configuration](https://docs.craftcms.com/v3/config/environments.html) in the Craft docs to learn more about that.
+> **Tip:** The API Key, and Endpoint settings can be set to environment variables. See [Environmental Configuration](https://docs.craftcms.com/v3/config/environments.html) in the Craft docs to learn more about that.

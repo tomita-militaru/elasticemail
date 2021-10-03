@@ -30,11 +30,6 @@ class ElasticEmailAdapter extends BaseTransportAdapter
     }
 
     /**
-     * @var string The domain
-     */
-    public $domain;
-
-    /**
      * @var string The API key that should be used
      */
     public $apiKey;
@@ -54,8 +49,7 @@ class ElasticEmailAdapter extends BaseTransportAdapter
             'class' => EnvAttributeParserBehavior::class,
             'attributes' => [
                 'apiKey',
-                'endpoint',
-                'domain',
+                'endpoint'
             ],
         ];
         return $behaviors;
@@ -68,7 +62,6 @@ class ElasticEmailAdapter extends BaseTransportAdapter
     {
         return [
             'apiKey' => Craft::t('elasticemail', 'API Key'),
-            'domain' => Craft::t('elasticemail', 'Domain'),
             'endpoint' => Craft::t('elasticemail', 'Endpoint'),
         ];
     }
@@ -79,8 +72,7 @@ class ElasticEmailAdapter extends BaseTransportAdapter
     public function rules()
     {
         return [
-            [['apiKey', 'domain', 'endpoint'], 'required'],
-            [['domain'], 'url', 'defaultScheme' => 'https'],
+            [['apiKey', 'endpoint'], 'required']
         ];
     }
 
@@ -100,7 +92,7 @@ class ElasticEmailAdapter extends BaseTransportAdapter
     public function defineTransport()
     {
         $configuration = new ElasticEmailClient\ApiConfiguration([
-            'apiUrl' => Craft::parseEnv($this->domain) . Craft::parseEnv($this->endpoint),
+            'apiUrl' => Craft::parseEnv($this->endpoint),
             'apiKey' => Craft::parseEnv($this->apiKey)
         ]);
 
@@ -112,8 +104,7 @@ class ElasticEmailAdapter extends BaseTransportAdapter
                 [
                     'class' => Swift_Events_SimpleEventDispatcher::class
                 ],
-                $client,
-                Craft::parseEnv($this->domain),
+                $client
             ],
         ];
     }

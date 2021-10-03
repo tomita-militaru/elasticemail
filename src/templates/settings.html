@@ -2,17 +2,6 @@
 
 {{ forms.autosuggestField({
     required: true,
-    label: "Domain"|t('elasticemail'),
-    instructions: "The domain to send email from."|t('elasticemail'),
-    id: 'domain',
-    name: 'domain',
-    suggestEnvVars: true,
-    value: adapter.domain,
-    errors: adapter.getErrors('domain')
-}) }}
-
-{{ forms.autosuggestField({
-    required: true,
     label: "API Key"|t('elasticemail'),
     instructions: "You can find this in your Elastic Email settings."|t('elasticemail'),
     id: 'apiKey',
@@ -28,7 +17,7 @@
     id: 'endpoint',
     name: 'endpoint',
     suggestEnvVars: true,
-    placeholder: 'https://api.elasticemail.com',
+    placeholder: 'https://api.elasticemail.com/v2/',
     value: adapter.endpoint,
     errors: adapter.getErrors('endpoint')
 }) }}

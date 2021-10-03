@@ -11,17 +11,10 @@ use Swift_Transport;
 
 class ElasticEmailTransport implements Swift_Transport
 {
-    const DOMAIN_HEADER = 'mg:domain';
-
     /**
-     * @var ElasticEmailClient $client
+     * @var ElasticEmailClient\ElasticClient $client
      */
     private $client;
-
-    /**
-     * @var string domain
-     */
-    private $domain;
 
     /**
      * The event dispatcher from the plugin API.
@@ -32,13 +25,11 @@ class ElasticEmailTransport implements Swift_Transport
 
     /**
      * @param \Swift_Events_EventDispatcher $eventDispatcher
-     * @param ElasticEmailClient $client
-     * @param $domain
+     * @param ElasticEmailClient\ElasticClient $client
      */
-    public function __construct(\Swift_Events_EventDispatcher $eventDispatcher, ElasticEmailClient $client, $domain)
+    public function __construct(\Swift_Events_EventDispatcher $eventDispatcher, ElasticEmailClient\ElasticClient $client)
     {
         $this->eventDispatcher = $eventDispatcher;
-        $this->domain = $domain;
         $this->client = $client;
     }
 
@@ -92,14 +83,44 @@ class ElasticEmailTransport implements Swift_Transport
             throw new \Swift_TransportException('Cannot send message without a recipient');
         }
 
-        $postData = $this->getPostData($message);
-        $domain = $this->getDomain($message);
-        $sent = count($postData['to']);
+        $bodyText = null;
+        $bodyHtml = null;
+        if ($message->getChildren()[0]->getBodyContentType() === 'text/plain') {
+            $bodyText = $message->getChildren()[0]->getBody();
+        } else {
+            $bodyHtml = $message->getChildren()[0]->getBody();
+        }
+        $fromArray = $message->getFrom();
+        $from = array_key_first($fromArray);
+        $fromName = $fromArray[$from];
+        $sent = count($message->getTo());
+        $to = array_keys($message->getTo());
         try {
-            $this->client->messages()->sendMime($domain, $postData['to'], $message->toString(), $postData);
+            $this->client->Email->Send(
+                $message->getSubject(),
+                $from,
+                $fromName,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                $to,
+                array(),
+                array(),
+                array(),
+                array(),
+                array(),
+                null,
+                null,
+                null,
+                $bodyHtml,
+                $bodyText
+            );
             $resultStatus = Swift_Events_SendEvent::RESULT_SUCCESS;
         } catch (\Exception $e) {
-            $failedRecipients = $postData['to'];
+            $failedRecipients = $to;
             $sent = 0;
             $resultStatus = Swift_Events_SendEvent::RESULT_FAILED;
         }
@@ -121,63 +142,6 @@ class ElasticEmailTransport implements Swift_Transport
     public function registerPlugin(Swift_Events_EventListener $plugin)
     {
         $this->eventDispatcher->bindEventListener($plugin);
-    }
-
-    /**
-     * Looks at the message headers to find post data.
-     *
-     * @param Swift_Message $message
-     */
-    protected function getPostData(Swift_Message $message)
-    {
-        return $this->prepareRecipients($message);;
-    }
-
-    /**
-     * @param Swift_Message $message
-     *
-     * @return array
-     */
-    protected function prepareRecipients(Swift_Message $message)
-    {
-        $headerNames = array('from', 'to', 'bcc', 'cc');
-        $messageHeaders = $message->getHeaders();
-        $postData = array();
-        foreach ($headerNames as $name) {
-            /** @var \Swift_Mime_Headers_MailboxHeader $h */
-            $h = $messageHeaders->get($name);
-            $postData[$name] = $h === null ? array() : $h->getAddresses();
-        }
-
-        // Merge 'bcc' and 'cc' into 'to'.
-        $postData['to'] = array_merge($postData['to'], $postData['bcc'], $postData['cc']);
-        unset($postData['bcc']);
-        unset($postData['cc']);
-
-        // Remove Bcc to make sure it is hidden
-        $messageHeaders->removeAll('bcc');
-
-        return $postData;
-    }
-
-    /**
-     * If the message header got a domain we should use that instead of $this->domain.
-     *
-     * @param Swift_Message $message
-     *
-     * @return string
-     */
-    protected function getDomain(Swift_Message $message)
-    {
-        $messageHeaders = $message->getHeaders();
-        if ($messageHeaders->has(self::DOMAIN_HEADER)) {
-            $domain = $messageHeaders->get(self::DOMAIN_HEADER)->getValue();
-            $messageHeaders->removeAll(self::DOMAIN_HEADER);
-
-            return $domain;
-        }
-
-        return $this->domain;
     }
 
     /**

@@ -25,6 +25,7 @@
     "rss": "https://github.com/workwithtom/elasticemail/commits/master.atom"
   },
   "require": {
+    "php": "^7.3||^8.0",
     "craftcms/cms": "^3.1.5",
     "elastic-email/web-api-client": "^1.0.0"
   },
