@@ -1,7 +1,7 @@
 {
   "name": "workwithtom/elasticemail",
   "description": "Elastic Email integration for Craft CMS",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "type": "craft-plugin",
   "keywords": [
     "cms",
