@@ -4,6 +4,8 @@
 
 This plugin provides a [Elastic Email](http://www.elasticemail.com/) integration for [Craft CMS](https://craftcms.com/).
 
+Please make sure to purchase a license from Craft CMS [plugin store](https://plugins.craftcms.com/elasticemail).
+
 ## Requirements
 
 This plugin requires Craft CMS 3.1.5 or later.
