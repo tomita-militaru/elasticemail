@@ -11,6 +11,7 @@ use craft\mail\transportadapters\BaseTransportAdapter;
 use workwithtom\elasticemail\services\ElasticEmailTransport;
 use Swift_Events_SimpleEventDispatcher;
 use ElasticEmailClient;
+use ElasticEmail\Configuration;
 
 /**
  * ElasticEmailAdapter implements a ElasticEmail transport adapter into Craft’s mailer.
@@ -49,7 +50,7 @@ class ElasticEmailAdapter extends BaseTransportAdapter
             'class' => EnvAttributeParserBehavior::class,
             'attributes' => [
                 'apiKey',
-                'endpoint'
+                'endpoint',
             ],
         ];
         return $behaviors;
@@ -72,7 +73,7 @@ class ElasticEmailAdapter extends BaseTransportAdapter
     public function rules()
     {
         return [
-            [['apiKey', 'endpoint'], 'required']
+            [['apiKey', 'endpoint'], 'required'],
         ];
     }
 
@@ -91,12 +92,13 @@ class ElasticEmailAdapter extends BaseTransportAdapter
      */
     public function defineTransport()
     {
-        $configuration = new ElasticEmailClient\ApiConfiguration([
-            'apiUrl' => Craft::parseEnv($this->endpoint),
-            'apiKey' => Craft::parseEnv($this->apiKey)
-        ]);
+        // Configure API key authorization: apikey
+        $config = \ElasticEmail\Configuration::getDefaultConfiguration()->setApiKey('X-ElasticEmail-ApiKey', Craft::parseEnv($this->apiKey));
 
-        $client = new ElasticEmailClient\ElasticClient($configuration);
+        $apiInstance = new \ElasticEmail\Api\EmailsApi(
+            new \GuzzleHttp\Client(),
+            $config
+        );
 
         return [
             'class' => ElasticEmailTransport::class,
@@ -104,7 +106,7 @@ class ElasticEmailAdapter extends BaseTransportAdapter
                 [
                     'class' => Swift_Events_SimpleEventDispatcher::class
                 ],
-                $client
+                $apiInstance
             ],
         ];
     }
