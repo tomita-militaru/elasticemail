@@ -1,7 +1,7 @@
 {
   "name": "workwithtom/elasticemail",
   "description": "Elastic Email integration for Craft CMS",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "type": "craft-plugin",
   "keywords": [
     "cms",
@@ -27,7 +27,7 @@
   "require": {
     "php": "^7.3||^8.0",
     "craftcms/cms": "^3.1.5",
-    "elastic-email/web-api-client": "^1.0.0"
+    "elasticemail/elasticemail-php": "*@dev"
   },
   "autoload": {
     "psr-4": {
