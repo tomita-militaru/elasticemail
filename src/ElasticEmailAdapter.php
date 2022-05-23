@@ -43,7 +43,7 @@ class ElasticEmailAdapter extends BaseTransportAdapter
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         $behaviors = parent::behaviors();
         $behaviors['parser'] = [
@@ -70,7 +70,7 @@ class ElasticEmailAdapter extends BaseTransportAdapter
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['apiKey', 'endpoint'], 'required'],
@@ -80,7 +80,7 @@ class ElasticEmailAdapter extends BaseTransportAdapter
     /**
      * @inheritdoc
      */
-    public function getSettingsHtml()
+    public function getSettingsHtml(): ?string
     {
         return Craft::$app->getView()->renderTemplate('elasticemail/settings', [
             'adapter' => $this
@@ -90,7 +90,7 @@ class ElasticEmailAdapter extends BaseTransportAdapter
     /**
      * @inheritdoc
      */
-    public function defineTransport()
+    public function defineTransport(): \Symfony\Component\Mailer\Transport\AbstractTransport|array
     {
         // Configure API key authorization: apikey
         $config = \ElasticEmail\Configuration::getDefaultConfiguration()->setApiKey('X-ElasticEmail-ApiKey', Craft::parseEnv($this->apiKey));
