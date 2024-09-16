@@ -1,0 +1,15 @@
+VERSION="1.1.6"
+
+ACCOUNTS=[
+    "GDBCYAGMLV7GXAOT2DRLN3SSXQ7H6YVSY57IVGI3RNYO6KAODA3NWUEG",
+]
+
+[DOCUMENTATION]
+ORG_NAME="Tomita Militaru"
+ORG_URL="https://www.tomitamilitaru.com"
+ORG_LOGO="https://www.tomitamilitaru.com/fileadmin/template/assets/img/work-with-tom-logo.png"
+ORG_DESCRIPTION="Elastic Email integration for Craft CMS"
+ORG_GITHUB="tomita-militaru"
+
+[[PRINCIPALS]]
+github="tomita-militaru"
